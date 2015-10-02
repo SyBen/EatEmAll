@@ -1,11 +1,15 @@
 // Imports
-var server = require("http").createServer(handler);
-var socketio = require("socket.io");
 var fs = require("fs");
+var express = require("express")();
+var server = require("http").Server(express);
+var io = require("socket.io")();
 // Program vars
 
+
+express.get("/", handler);
+
 function handler (req, res) {
-  fs.readFile(__dirname + '/site/index.html',
+  fs.readFile(__dirname + '/client/index.html',
   function (err, data) {
     if (err) {
       res.writeHead(500);
@@ -18,5 +22,9 @@ function handler (req, res) {
   console.log("Connection from : " + req.connection.remoteAddress + " with headers : ");
   console.log(req.headers);
 }
+
+io.on("connection", function(socket) {
+  console.log("Socket connection");
+});
 
 server.listen(8080);
