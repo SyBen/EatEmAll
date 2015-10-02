@@ -1,0 +1,28 @@
+{
+  "name": "eatEmAll",
+  "version": "0.0.0",
+  "homepage": "https://github.com/SyBen/EatEmAll",
+  "description": "School game project",
+  "main": "server.js",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "keywords": [
+    "game",
+    "eat",
+    "sweet"
+  ],
+  "authors": [
+    "Benhamiche Sylvain",
+    "Le Goff Quentin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
