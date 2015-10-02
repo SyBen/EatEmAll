@@ -1,8 +1,12 @@
 // Imports
-var server = require("http").createServer(handler);
-var socketio = require("socket.io");
 var fs = require("fs");
+var express = require("express")();
+var server = require("http").Server(express);
+var socketio = require("socket.io")();
 // Program vars
+
+
+express.get("/", handler);
 
 function handler (req, res) {
   fs.readFile(__dirname + '/site/index.html',
