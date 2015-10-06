@@ -1,0 +1,21 @@
+body{
+  background-color: cadetblue;
+}
+
+.container {
+  margin: auto;
+  background-color: beige;
+}
+
+.row {
+}
+
+.header h1{
+  text-align: center;
+}
+
+#game-container {
+  height: 400px;
+  background-color: grey;
+  border: 0.2em solid #484848;
+}
