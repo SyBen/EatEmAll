@@ -3,6 +3,13 @@ define(["view"], function (view) {
   
   return {
     
+    initializePlayer: function () {
+    
+      view.displayNicknameBox();
+      
+    
+    },
+    
     getNickname: function () {
     
       view.askNickname();
