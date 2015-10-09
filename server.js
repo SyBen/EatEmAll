@@ -1,9 +1,12 @@
+
 var express = require("express")
 var app = express();
 var server = require("http").Server(app);
 var port = 8080;
 var io = require("socket.io")();
 // Program vars
+var players = new Array(10);
+
 
 /******************
 Server
