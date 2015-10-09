@@ -1,21 +1,27 @@
-// Imports
-var fs = require("fs");
 var express = require("express")
 var app = express();
 var server = require("http").Server(app);
+var port = 8080;
 var io = require("socket.io")();
 // Program vars
 
-app.use("/", express.static(__dirname + '/client'));
-app.get("/", handler);
+/******************
+Server
+******************/
 
-function handler (req, res) {
-  console.log("Connection from : " + req.connection.remoteAddress + " with headers : ");
-  console.log(req.headers);
-}
+app.use(express.static('public'));
 
-io.on("connection", function(socket) {
-  console.log("Socket connection");
+app.get("/", function(req, res){
+   res.sendfile('index.html');
 });
 
-server.listen(8080);
+/******************
+Communication
+******************/
+var io = require("socket.io").listen(server);
+
+io.sockets.on("connection", function (socket) {
+  console.log("Socket connected");
+});
+
+server.listen(port);

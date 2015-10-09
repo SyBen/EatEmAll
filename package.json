@@ -1,16 +1,19 @@
 {
   "name": "EatEmAll",
   "version": "0.0.1",
-  "description": "",
+  "description": "Best game of the world",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Benhamiche Sylvain & Le Goff Quentin",
   "license": "BSD",
   "dependencies": {
     "socket.io": "~1.3.7",
-    "express": "~4.13.3"
+    "express": "^4.13.3"
+  },
+  "devDependencies": {
+    "bower": "^1.5.3"
   }
 }
