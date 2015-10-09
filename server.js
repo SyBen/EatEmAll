@@ -1,24 +1,15 @@
 // Imports
 var fs = require("fs");
-var express = require("express")();
-var server = require("http").Server(express);
+var express = require("express")
+var app = express();
+var server = require("http").Server(app);
 var io = require("socket.io")();
 // Program vars
 
-
-express.get("/", handler);
+app.use("/", express.static(__dirname + '/client'));
+app.get("/", handler);
 
 function handler (req, res) {
-  fs.readFile(__dirname + '/client/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-
-    res.writeHead(200);
-    res.end(data);
-});
   console.log("Connection from : " + req.connection.remoteAddress + " with headers : ");
   console.log(req.headers);
 }
