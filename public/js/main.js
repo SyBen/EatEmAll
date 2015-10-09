@@ -1,7 +1,7 @@
-require(["socketio"], function (io) {
+require(["service", "presenter"], function (service, presenter) {
   "use script";
-  
-  var _socket = io.connect('http://localhost:8080');
-  
+
+  service.initializeConnection();
+  presenter.getNickname();
   
 });
