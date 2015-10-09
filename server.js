@@ -1,7 +1,10 @@
 var express = require("express");
 var app = express();
 var port = 8080;
+var io = require("socket.io")();
 var server = require("http").createServer(app);
+// Program vars
+var players = new Array(10);
 
 /******************
 Server
@@ -21,9 +24,6 @@ var io = require("socket.io").listen(server);
 io.on("connection", function (socket) {
   console.log("Socket connected");
 });
-
-
-
 
 //Run server
 server.listen(port);
