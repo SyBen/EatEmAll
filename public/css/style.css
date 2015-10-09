@@ -1,13 +1,22 @@
 body{
-  background-color: cadetblue;
+  background-color: #92a4b7;
+  text-align: justify;
+}
+
+.center {
+  text-align: center;
 }
 
 .container {
   margin: auto;
-  background-color: beige;
+  padding: 0;
+  background-color: #ffffff;
+  border-left: solid #568abf 0.5em;
+  border-right: solid #568abf 0.5em;
 }
 
 .row {
+  margin: 1em;
 }
 
 .header h1{
@@ -16,6 +25,6 @@ body{
 
 #game-container {
   height: 400px;
-  background-color: grey;
+  background-color: #c7c7c7;
   border: 0.2em solid #484848;
 }
