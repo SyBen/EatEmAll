@@ -2,20 +2,22 @@ define(["service"], function (service) {
   "use script";
   
   return {
-    
-    initializeConnection: function () {
-      
-      service.send('initializeConnection');
-      
+        
+    getGame: function () {
+      service.send("getGame");
     },
     
-    sendNickname: function (nickname, callback) {
+    joinGame: function (nickname) {
     
-      service.send('setNick', nickname, function(data) {
+      service.send("joinGame", nickname);
+    
+    },
+    
+    initializeSocketReceiver: function (command, callback) {
+      service.receive(command, function (data) {
         callback(data);
       });
-    
-    },
+    }
     
   };
 

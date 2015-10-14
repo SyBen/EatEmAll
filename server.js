@@ -24,31 +24,35 @@ app.use(express.static('public'));
 app.get("/", function (req, res) {
   res.sendfile('index.html');
 });
+  
+//Run server
+server.listen(port);
+console.log("Server runs on port : " + port);
+
 
 /******************
 Communication
 ******************/
 var io = socketio.listen(server);
-var players = [];
+var game = new Game();
 
 io.on("connection", function (socket) {
-  console.log("Socket connected");
-  socket.emit("askNick");
-  
-  socket.on("setNick", function(data) {
+  var addedPlayer = false;
+
+  socket.on("joinGame", function(data) {
     
     var player = new Player(data);
-    console.log(player.toString());
-    players.push(player);
-    io.sockets.emit("updateUsers", players);
+    
+    game.addPlayer(player);
+    
+    io.sockets.emit("updateGame", game);
     
   });
+  
+  
 });
 
 
-//Run server
-server.listen(port);
-console.log("Server runs on port : " + port);
 
   
 });

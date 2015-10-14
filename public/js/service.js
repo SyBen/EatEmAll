@@ -1,4 +1,4 @@
-define(["socketio"], function (io, presenter) {
+define(["socketio"], function (io) {
   "use script";
 
   return {
@@ -13,19 +13,10 @@ define(["socketio"], function (io, presenter) {
       this._socket.emit(command, data);
     },
 
-    receive: function (command, callback) {
-      this._socket.on(command, callback);
+    receive: function (command, data) {
+      this._socket.on(command, data);
     },
 
-//    initializeReceivers: function () {
-//
-//      this.receive('askNick', function () {
-//
-//          presenter.initializePlayer();
-//
-//      });
-//
-//    }
 
   };
 

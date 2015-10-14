@@ -1,51 +1,57 @@
 define(["view", "manager"], function (view, manager) {
   "use script";
-  
+
   return {
     
-    askNickname: function () {
-    
+    askToJoinGame: function () {
+
       view.displayNicknameBox();
       this.onNicknameBoxSubmitHandler();
-      
-    },   
-    
-    setUsers: function (playersList) {
-      view.emptyPlayersList();
-      playersList.forEach( function (player) {
-        view.addPlayer(player);
-      });
-      
-      this.onNicknameBoxSubmitHandler();
-      
+
     },
-    
+
+    setPlayers: function (playersList) {
+      view.emptyPlayersList();
+
+      playersList.forEach(function (player) {
+        view.addPlayerInList(player);
+      });
+
+    },
+
     /*************
     Listeners
     *************/
-    
-    onNicknameBoxSubmitHandler: function() {
-      
+
+    onNicknameBoxSubmitHandler: function () {
+
       $("#nicknameBox").on('submit', function (evt) {
         evt.preventDefault();
         var nickname = $("#nickname").val();
-        
-        if(nickname.length > 0) {
-          manager.sendNickname(nickname);
+
+        if (nickname.length > 0) {
+          manager.joinGame(nickname);
           view.hideNicknameBox();
-        }
-        else {
+        } else {
           view.displayNicknameBox();
         }
-          
+
       });
     },
-    
-    initializeGameListeners: function () {
+
+    /************
+    Socket commands
+    *************/
+
+    initializeReceivers: function () {
       
-      
-    },
-    
+      manager.initializeSocketReceiver("updateGame", function (game) {
+        console.log(game);
+        this.setPlayers(game.players);
+      }.bind(this));
+
+    }
+
   };
 
 });
