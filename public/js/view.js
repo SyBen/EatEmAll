@@ -3,12 +3,12 @@ define([""], function () {
   
   return {
     
-    emptyUsersList: function (user) {
+    emptyPlayersList: function (user) {
       $("#usersDescriptionBox").empty();
     },   
     
-    addUser: function (user) {
-      $("#usersDescriptionBox").append("<li>"+ user +"</li>");
+    addPlayer: function (player) {
+      $("#usersDescriptionBox").append("<li>"+ player._nickname +"</li>");
     },
     
     displayNicknameBox: function () {

@@ -10,10 +10,10 @@ define(["view", "manager"], function (view, manager) {
       
     },   
     
-    setUsers: function (usersList) {
-      view.emptyUsersList();
-      usersList.forEach( function (user) {
-        view.addUser(user);
+    setUsers: function (playersList) {
+      view.emptyPlayersList();
+      playersList.forEach( function (player) {
+        view.addPlayer(player);
       });
       
       this.onNicknameBoxSubmitHandler();
@@ -39,7 +39,12 @@ define(["view", "manager"], function (view, manager) {
         }
           
       });
-    }
+    },
+    
+    initializeGameListeners: function () {
+      
+      
+    },
     
   };
 

@@ -6,7 +6,7 @@ require(["service", "presenter"], function (service, presenter) {
   });
   
   service.receive('updateUsers', function (data) {
-    console.log('updateUsers request');
+    console.log(data);
     presenter.setUsers(data);
   });
   
