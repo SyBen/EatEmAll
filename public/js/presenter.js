@@ -3,12 +3,16 @@ define(["view", "manager"], function (view, manager) {
   
   return {
     
-    initializePlayer: function () {
+    askNickname: function () {
     
       view.displayNicknameBox();
       this.onNicknameBoxSubmitHandler();
       
     },
+    
+    /*************
+    Listeners
+    *************/
     
     onNicknameBoxSubmitHandler: function() {
       
