@@ -5,8 +5,16 @@ define(["service"], function (service) {
     
     initializeConnection: function () {
       
-      service.initializeConnection();
+      service.send('initializeConnection');
       
+    },
+    
+    sendNickname: function (nickname, callback) {
+    
+      service.send('setNick', nickname, function(data) {
+        callback(data);
+      });
+    
     },
     
   };

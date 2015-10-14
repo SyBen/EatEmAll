@@ -1,6 +1,8 @@
 require(["service", "presenter"], function (service, presenter) {
   "use script";
 
-  presenter.initializePlayer();
+  service.receive('askNick', function () {
+    presenter.initializePlayer();
+  });
   
 });

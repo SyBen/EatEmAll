@@ -3,7 +3,7 @@ define(["socketio"], function (io) {
   
   return {
     
-    _socket: io.connect('http://localhost:8080'),
+    _socket: io(),
     
     _commands: {
       
@@ -13,13 +13,19 @@ define(["socketio"], function (io) {
       this._socket.emit(command, data);
     },
     
-    receive: function (command, data) {
-      this.on(command, data);
+    receive: function (command, callback) {
+      this._socket.on(command, callback);
     },
     
-    initializeConnection: function () {
-      console.log("Bouh");
-    },
+  /*    initializeReceivers: function () {
+
+        this.receive('askNick', function () {
+
+
+
+        });
+
+      }*/
     
   };
 
