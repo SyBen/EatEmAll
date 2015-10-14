@@ -8,6 +8,16 @@ define(["view", "manager"], function (view, manager) {
       view.displayNicknameBox();
       this.onNicknameBoxSubmitHandler();
       
+    },   
+    
+    setUsers: function (usersList) {
+      view.emptyUsersList();
+      usersList.forEach( function (user) {
+        view.addUser(user);
+      });
+      
+      this.onNicknameBoxSubmitHandler();
+      
     },
     
     /*************

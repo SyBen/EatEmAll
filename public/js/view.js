@@ -3,6 +3,14 @@ define([""], function () {
   
   return {
     
+    emptyUsersList: function (user) {
+      $("#usersDescriptionBox").empty();
+    },   
+    
+    addUser: function (user) {
+      $("#usersDescriptionBox").append("<li>"+ user +"</li>");
+    },
+    
     displayNicknameBox: function () {
     
       $("#modalBox .modal-title").html("Bienvenue");

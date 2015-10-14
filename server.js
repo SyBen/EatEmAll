@@ -4,7 +4,7 @@ var port = 8080;
 var io = require("socket.io")();
 var server = require("http").createServer(app);
 // Program vars
-var players = new Array(10);
+var players = [];
 
 
 /******************
@@ -25,8 +25,11 @@ var io = require("socket.io").listen(server);
 io.on("connection", function (socket) {
   console.log("Socket connected");
   socket.emit("askNick");
+  
   socket.on("setNick", function(data) {
     console.log("Player nick : " + data);
+    players.push(data);
+    io.sockets.emit("updateUsers", players);
   });
 });
 

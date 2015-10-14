@@ -5,4 +5,9 @@ require(["service", "presenter"], function (service, presenter) {
     presenter.askNickname();
   });
   
+  service.receive('updateUsers', function (data) {
+    console.log('updateUsers request');
+    presenter.setUsers(data);
+  });
+  
 });
