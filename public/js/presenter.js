@@ -2,7 +2,7 @@ define(["view", "manager"], function (view, manager) {
   "use script";
 
   return {
-    
+
     askToJoinGame: function () {
 
       view.displayNicknameBox();
@@ -44,7 +44,7 @@ define(["view", "manager"], function (view, manager) {
     *************/
 
     initializeReceivers: function () {
-      
+
       manager.initializeSocketReceiver("updateGame", function (game) {
         console.log(game);
         this.setPlayers(game.players);
