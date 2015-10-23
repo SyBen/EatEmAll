@@ -11,7 +11,7 @@ define(["socketio"], function (io) {
 
     initializeConnection: function () {
       this._socket = io();
-      console.log("Socket connectée au serveur");
+      console.log("Socket connectée au serveur");      
     },
 
     send: function (command, data) {

@@ -47,8 +47,22 @@ requirejs(["express", "socket.io", "http", "app/models/player", "app/models/game
       player = new Player(data);
 
       game.addPlayer(player);
-
+      
+      socket.emit("inGame");
       io.sockets.emit("updateGame", game);
+      
+      socket.on("goTo", function (direction) {
+        if(direction === "left")
+          console.log(player.getNickname() + " veut aller à gauche.");        
+        else if(direction === "right")
+          console.log(player.getNickname() + " veut aller à droite.");       
+        else if(direction === "up")
+          console.log(player.getNickname() + " veut aller en haut.");       
+        else if(direction === "down")
+          console.log(player.getNickname() + " veut aller en bas.");
+        
+        io.sockets.emit("updateGame", game);
+      });
 
     });
 
@@ -58,7 +72,7 @@ requirejs(["express", "socket.io", "http", "app/models/player", "app/models/game
         game.removePlayer(player);
         io.sockets.emit("updateGame", game);
       } else {
-        console.log("un utilisateur s'est déconnecté");
+        console.log("Un utilisateur s'est déconnecté");
       }
     });
 

@@ -6,11 +6,11 @@ define(["view", "manager"], function (view, manager) {
     askToJoinGame: function () {
 
       view.displayNicknameBox();
-      this.onNicknameBoxSubmitHandler();
+      this._onNicknameBoxSubmitHandler();
 
     },
 
-    setPlayers: function (playersList) {
+    _setPlayers: function (playersList) {
       view.emptyPlayersList();
 
       playersList.forEach(function (player) {
@@ -23,7 +23,23 @@ define(["view", "manager"], function (view, manager) {
     Listeners
     *************/
 
-    onNicknameBoxSubmitHandler: function () {
+    _onLeftKeyPressHandler: function () {
+      manager.goTo("left");
+    },
+    
+    _onRightKeyPressHandler: function () {
+      manager.goTo("right");
+    },
+    
+    _onUpKeyPressHandler: function () {
+      manager.goTo("up");
+    },
+    
+    _onDownKeyPressHandler: function () {
+      manager.goTo("down");
+    },
+    
+    _onNicknameBoxSubmitHandler: function () {
 
       $("#nicknameBox").on('submit', function (evt) {
         evt.preventDefault();
@@ -38,6 +54,33 @@ define(["view", "manager"], function (view, manager) {
 
       });
     },
+    
+    _intializeGameListeners: function () {
+      
+      $(document).keydown(function(e) {
+        switch(e.which) {
+            case 37: // left
+            this._onLeftKeyPressHandler();
+            break;
+
+            case 38: // up
+            this._onUpKeyPressHandler();
+            break;
+
+            case 39: // right
+            this._onRightKeyPressHandler();
+            break;
+
+            case 40: // down
+            this._onDownKeyPressHandler();
+            break;
+
+            default: return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+      }.bind(this));
+      
+    },
 
     /************
     Socket commands
@@ -47,9 +90,13 @@ define(["view", "manager"], function (view, manager) {
 
       manager.initializeSocketReceiver("updateGame", function (game) {
         console.log(game);
-        this.setPlayers(game.players);
+        this._setPlayers(game.players);
       }.bind(this));
 
+      manager.initializeSocketReceiver("inGame", function () {
+        console.log("ingame recu");
+        this._intializeGameListeners();
+      }.bind(this));
     }
 
   };

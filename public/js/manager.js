@@ -18,6 +18,10 @@ define(["service"], function (service) {
       service.send("joinGame", nickname);
 
     },
+    
+    goTo: function (direction) {
+      service.send("goTo", direction);
+    },
 
     initializeSocketReceiver: function (command, callback) {
       service.receive(command, function (data) {
