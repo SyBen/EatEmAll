@@ -8,7 +8,14 @@ define(['app/models/player'], function (Player) {
     }
 
     this.players = [];
-    this.grid = [xSize][ySize];
+    this.grid = [];
+    
+    for(var i=0; i<25; i++) {
+      this.grid[i] = [];
+      for(var j=0; j<25; j++) {
+          this.grid[i][j] = 0;
+    }
+}
   }
 
   Game.prototype = {
@@ -21,14 +28,14 @@ define(['app/models/player'], function (Player) {
           yPosition = 0;
       
       while(this.isSomeoneAt(xPosition, yPosition)){
-        xPosition = Math.floor(Math.random()*50);
-        yPosition = Math.floor(Math.random()*50);
+        xPosition = Math.floor(Math.random()*25);
+        yPosition = Math.floor(Math.random()*25);
       }
       
       var player = new Player(nickname, xPosition, yPosition);
 
       this.grid[xPosition][yPosition] = this.players.push(player);
-
+      
       return this.players.indexOf(player);
     },
 
@@ -56,23 +63,23 @@ define(['app/models/player'], function (Player) {
       
       switch(direction){
         case 'left':
-          if(!(this.isSomeoneAt((currentPlayer.getXPosition()-1), currentPlayer.getYPosition()))){
-            currentPlayer.setXPosition(currentPlayer.getXPosition()-1);
+          if(! this.isSomeoneAt((currentPlayer.getXPosition()-1).mod(25), currentPlayer.getYPosition().mod(25)) ){
+            currentPlayer.setXPosition((currentPlayer.getXPosition()-1).mod(25));
           }
           break;
         case 'right':
-          if(!(this.isSomeoneAt((currentPlayer.getXPosition()+1), currentPlayer.getYPosition()))){
-            currentPlayer.setXPosition(currentPlayer.getXPosition()+1);
+          if(! this.isSomeoneAt((currentPlayer.getXPosition()+1).mod(25), currentPlayer.getYPosition().mod(25)) ){
+            currentPlayer.setXPosition((currentPlayer.getXPosition()+1).mod(25));
           }
           break;
         case 'up':
-          if(!(this.isSomeoneAt((currentPlayer.getXPosition()), currentPlayer.getYPosition()-1))){
-            currentPlayer.setYPosition(currentPlayer.getYPosition()-1);
+          if(! this.isSomeoneAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()-1).mod(25)) ){
+            currentPlayer.setYPosition((currentPlayer.getYPosition()-1).mod(25));
           }
           break;
         case 'down':
-          if(!(this.isSomeoneAt((currentPlayer.getXPosition()), currentPlayer.getYPosition()+1))){
-            currentPlayer.setYPosition(currentPlayer.getYPosition()+1);
+          if(! this.isSomeoneAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()+1).mod(25)) ){
+            currentPlayer.setYPosition((currentPlayer.getYPosition()+1).mod(25));
           }
           break; 
           
@@ -83,5 +90,9 @@ define(['app/models/player'], function (Player) {
     
 
   };
+  
+  Number.prototype.mod = function(n) { return ((this%n)+n)%n; };
+  
+  
  return Game;
 });
