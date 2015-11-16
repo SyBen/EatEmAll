@@ -49,70 +49,38 @@ define(['app/models/player'], function (Player) {
       return this.players[playerId];
     },
 
-    setPlayerPosition: function (currentPlayerId, direction) { //TODO Refactor
+    setPlayerPosition: function (currentPlayerId, direction) {
       var currentPlayer = this.getPlayerById(currentPlayerId);
-      var possible = true;
-
-      if(direction === 'left'){
-        console.log(currentPlayer.getNickname() + ' veut aller à gauche.');
-        this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
-          if(otherPlayerId != currentPlayerId){
-            if((otherPlayer.getXPosition() === currentPlayer.getXPosition()-1)&&(otherPlayer.getYPosition() === currentPlayer.getYPosition())){
-              possible = false;
-            }
+      
+      this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 0;
+      
+      switch(direction){
+        case 'left':
+          if(!(this.isSomeoneAt((currentPlayer.getXPosition()-1), currentPlayer.getYPosition()))){
+            currentPlayer.setXPosition(currentPlayer.getXPosition()-1);
           }
-        });
-
-        if(possible) {
-          currentPlayer.setXPosition(currentPlayer.getXPosition() - 1);
-        }
-      }
-      else if(direction === 'right') {
-        console.log(currentPlayer.getNickname() + ' veut aller à droite.');
-
-        this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
-          if(otherPlayerId != currentPlayerId){
-            if((otherPlayer.getXPosition() === currentPlayer.getXPosition()+1)&&(otherPlayer.getYPosition() === currentPlayer.getYPosition())){
-              possible = false;
-            }
+          break;
+        case 'right':
+          if(!(this.isSomeoneAt((currentPlayer.getXPosition()+1), currentPlayer.getYPosition()))){
+            currentPlayer.setXPosition(currentPlayer.getXPosition()+1);
           }
-        });
-        if(possible) {
-          currentPlayer.setXPosition(currentPlayer.getXPosition() + 1);
-        }
-      }
-      else if(direction === 'up'){
-        console.log(currentPlayer.getNickname() + ' veut aller en haut.');
-        this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
-          if(otherPlayerId != currentPlayerId){
-            if((otherPlayer.getYPosition() === currentPlayer.getYPosition()+1)&&(otherPlayer.getXPosition() === currentPlayer.getXPosition())){
-              possible = false;
-            }
+          break;
+        case 'up':
+          if(!(this.isSomeoneAt((currentPlayer.getXPosition()), currentPlayer.getYPosition()-1))){
+            currentPlayer.setYPosition(currentPlayer.getYPosition()-1);
           }
-        });
-        if(possible) {
-          currentPlayer.setYPosition(currentPlayer.getYPosition() + 1);
-        }
-      }
-      else if(direction === 'down'){
-        console.log(currentPlayer.getNickname() + ' veut aller en bas.');
-
-
-        this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
-          if(otherPlayerId != currentPlayerId){
-            if((otherPlayer.getYPosition() === currentPlayer.getYPosition()-1)&&(otherPlayer.getXPosition() === currentPlayer.getXPosition())){
-              possible = false;
-            }
+          break;
+        case 'down':
+          if(!(this.isSomeoneAt((currentPlayer.getXPosition()), currentPlayer.getYPosition()+1))){
+            currentPlayer.setYPosition(currentPlayer.getYPosition()+1);
           }
-        });
-
-        if(possible)
-          currentPlayer.setYPosition(currentPlayer.getYPosition() - 1);
+          break; 
+          
       }
-      console.log(currentPlayer.getXPosition() + ', ' + currentPlayer.getYPosition());
-
-      return possible;
+      
+      this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 1;
     },
+    
 
   };
  return Game;
