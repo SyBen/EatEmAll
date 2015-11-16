@@ -36,35 +36,75 @@ define(['app/models/player'], function (Player) {
     
     setPlayerPosition: function (currentPlayerId, direction) {
       var currentPlayer = this.getPlayerById(currentPlayerId);
-      var done;        
+      var possible = true;        
         
       if(direction === 'left'){ 
         console.log(currentPlayer.getNickname() + ' veut aller à gauche.');   
-        console.log(currentPlayer.getXPosition() + ', ' + currentPlayer.getYPosition());   
       
-        this.getPlayers.forEach( function (otherPlayer, otherPlayerId) {
-          if(otherPlayer.getXPosition() === currentPlayer.getXPosition()-1){
-            done = false;
-          }
-          else {
-            currentPlayer.setXPosition(currentPlayer.getXPosition() - 1);
-            done = true;
+        this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
+          if(otherPlayerId != currentPlayerId){
+            if((otherPlayer.getXPosition() === currentPlayer.getXPosition()-1)&&(otherPlayer.getYPosition() === currentPlayer.getYPosition())){
+              possible = false;
+            }
           }
         });
         
-        console.log(currentPlayer.getXPosition() + ', ' + currentPlayer.getYPosition());   
+        if(possible)
+          currentPlayer.setXPosition(currentPlayer.getXPosition() - 1);
+
       }
       else if(direction === 'right'){
         console.log(currentPlayer.getNickname() + ' veut aller à droite.');   
+      
+        this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
+          if(otherPlayerId != currentPlayerId){
+            if((otherPlayer.getXPosition() === currentPlayer.getXPosition()+1)&&(otherPlayer.getYPosition() === currentPlayer.getYPosition())){
+              possible = false;
+            }
+          }
+        });
+        
+        if(possible)
+          currentPlayer.setXPosition(currentPlayer.getXPosition() + 1);
+        
+ 
       }
       else if(direction === 'up'){
-        console.log(currentPlayer.getNickname() + ' veut aller en haut.');  
+        console.log(currentPlayer.getNickname() + ' veut aller en haut.');   
+      
+        this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
+          if(otherPlayerId != currentPlayerId){
+            if((otherPlayer.getYPosition() === currentPlayer.getYPosition()+1)&&(otherPlayer.getXPosition() === currentPlayer.getXPosition())){
+              possible = false;
+            }
+          }
+        });
+        
+        if(possible)
+          currentPlayer.setYPosition(currentPlayer.getYPosition() + 1);
+        
+
       }
       else if(direction === 'down'){
         console.log(currentPlayer.getNickname() + ' veut aller en bas.');
-      }
+
       
-      return done;
+        this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
+          if(otherPlayerId != currentPlayerId){
+            if((otherPlayer.getYPosition() === currentPlayer.getYPosition()-1)&&(otherPlayer.getXPosition() === currentPlayer.getXPosition())){
+              possible = false;
+            }
+          }
+        });
+        
+        if(possible)
+          currentPlayer.setYPosition(currentPlayer.getYPosition() - 1);
+        
+       
+      }
+      console.log(currentPlayer.getXPosition() + ', ' + currentPlayer.getYPosition());  
+      
+      return possible;
     },
     
   };

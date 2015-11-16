@@ -35,10 +35,12 @@ requirejs(['express', 'socket.io', 'http', 'app/models/player', 'app/models/game
   ******************/
   var io = socketio.listen(server);
   var game = new Game();
-  var playerId;
+  
   
   io.on('connection', function (socket) {
     var addedPlayer = false;
+    var playerId;
+    
     console.log('Un utilisateur s\'est connecté');
     io.sockets.emit('updateGame', game);
 
@@ -53,6 +55,7 @@ requirejs(['express', 'socket.io', 'http', 'app/models/player', 'app/models/game
         
         game.setPlayerPosition(playerId, direction);
         io.sockets.emit('updateGame', game);
+        
       });
 
     });
