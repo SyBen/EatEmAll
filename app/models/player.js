@@ -1,7 +1,7 @@
 define(function () {
   "use strict";
 
-  function Player(nickname) {
+  function Player(nickname, xPosition, yPosition) {
 
     if (!(this instanceof Player)) {
       throw new TypeError("Player constructor cannot be called as a function.");
@@ -9,8 +9,8 @@ define(function () {
 
     this.nickname = nickname;
     this.position = {
-      x: 0,
-      y: 0
+      x: xPosition,
+      y: yPosition
     };
     
     this.color = '#'+Math.floor(Math.random()*16777215).toString(16);

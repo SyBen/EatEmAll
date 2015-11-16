@@ -45,7 +45,7 @@ requirejs(['express', 'socket.io', 'http', 'app/models/player', 'app/models/game
     io.sockets.emit('updateGame', game);
 
     socket.on('joinGame', function (data) {
-
+      console.log(data);
       playerId = game.addPlayer(data);
       
       socket.emit('inGame');

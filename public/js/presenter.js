@@ -28,7 +28,7 @@ define(['view', 'manager'], function (view, manager) {
       
       game.players.forEach( function (player) {
         ctx.fillStyle = player.color;
-        ctx.fillRect((player.position.x*10)%500, (player.position.y*10)%500, 10, 10);
+        ctx.fillRect(player.position.y, player.position.y, 10, 10);
       });     
       
     },

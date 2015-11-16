@@ -15,11 +15,31 @@ define(['app/models/player'], function (Player) {
 
     constructor: Game,
 
-    addPlayer: function (data) {
-      var player = new Player(data);
+    addPlayer: function (nickname) {
+      
+      var xPosition = 0,
+          yPosition = 0;
+      while(this.isSomeoneAt(xPosition, yPosition)){
+        xPosition = Math.floor(Math.random()*50);
+        yPosition = Math.floor(Math.random()*50);
+        
+      }
+      var player = new Player(nickname, xPosition, yPosition);
       this.players.push(player);
       
       return this.players.indexOf(player);
+    },
+    
+    isSomeoneAt: function (xPosition, yPosition) {
+      var bool = false;
+      this.getPlayers().forEach(function (player) {
+        if(player.getXPosition() === xPosition && player.getYPosition() === yPosition){
+          bool = true;
+          return;
+        }
+      });
+      
+      return bool;
     },
 
     removePlayer: function (player) {
