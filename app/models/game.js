@@ -36,7 +36,8 @@ define(['app/models/player'], function (Player) {
     },
 
     removePlayer: function (player) {
-      this.players.splice(this.players.indexOf(player));
+      this.grid[player.getXPosition()][player.getYPosition()] = 0;
+      this.players.splice(this.players.indexOf(player), 1);
     },
 
     getPlayers: function () {
@@ -53,7 +54,6 @@ define(['app/models/player'], function (Player) {
 
       if(direction === 'left'){
         console.log(currentPlayer.getNickname() + ' veut aller à gauche.');
-
         this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
           if(otherPlayerId != currentPlayerId){
             if((otherPlayer.getXPosition() === currentPlayer.getXPosition()-1)&&(otherPlayer.getYPosition() === currentPlayer.getYPosition())){
@@ -62,11 +62,11 @@ define(['app/models/player'], function (Player) {
           }
         });
 
-        if(possible)
+        if(possible) {
           currentPlayer.setXPosition(currentPlayer.getXPosition() - 1);
-
+        }
       }
-      else if(direction === 'right'){
+      else if(direction === 'right') {
         console.log(currentPlayer.getNickname() + ' veut aller à droite.');
 
         this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
@@ -76,15 +76,12 @@ define(['app/models/player'], function (Player) {
             }
           }
         });
-
-        if(possible)
+        if(possible) {
           currentPlayer.setXPosition(currentPlayer.getXPosition() + 1);
-
-
+        }
       }
       else if(direction === 'up'){
         console.log(currentPlayer.getNickname() + ' veut aller en haut.');
-
         this.getPlayers().forEach( function (otherPlayer, otherPlayerId) {
           if(otherPlayerId != currentPlayerId){
             if((otherPlayer.getYPosition() === currentPlayer.getYPosition()+1)&&(otherPlayer.getXPosition() === currentPlayer.getXPosition())){
@@ -92,11 +89,9 @@ define(['app/models/player'], function (Player) {
             }
           }
         });
-
-        if(possible)
+        if(possible) {
           currentPlayer.setYPosition(currentPlayer.getYPosition() + 1);
-
-
+        }
       }
       else if(direction === 'down'){
         console.log(currentPlayer.getNickname() + ' veut aller en bas.');
@@ -112,8 +107,6 @@ define(['app/models/player'], function (Player) {
 
         if(possible)
           currentPlayer.setYPosition(currentPlayer.getYPosition() - 1);
-
-
       }
       console.log(currentPlayer.getXPosition() + ', ' + currentPlayer.getYPosition());
 
@@ -121,7 +114,5 @@ define(['app/models/player'], function (Player) {
     },
 
   };
-
-  return Game;
-
+ return Game;
 });
