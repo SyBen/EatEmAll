@@ -16,32 +16,23 @@ define(['app/models/player'], function (Player) {
     constructor: Game,
 
     addPlayer: function (nickname) {
-      
+
       var xPosition = 0,
           yPosition = 0;
       while(this.isSomeoneAt(xPosition, yPosition)){
         xPosition = Math.floor(Math.random()*50);
         yPosition = Math.floor(Math.random()*50);
-        
+
       }
       var player = new Player(nickname, xPosition, yPosition);
-      this.players.push(player);
 
-      grid[player.getXPosition][player.getYPosition] = this.players.indexOf(player);
+      this.grid[xPosition][yPosition] = this.players.push(player);
 
       return this.players.indexOf(player);
     },
-    
+
     isSomeoneAt: function (xPosition, yPosition) {
-      var bool = false;
-      this.getPlayers().forEach(function (player) {
-        if(player.getXPosition() === xPosition && player.getYPosition() === yPosition){
-          bool = true;
-          return;
-        }
-      });
-      
-      return bool;
+      return this.grid[xPosition][yPosition] > 0;
     },
 
     removePlayer: function (player) {
@@ -56,7 +47,7 @@ define(['app/models/player'], function (Player) {
       return this.players[playerId];
     },
 
-    setPlayerPosition: function (currentPlayerId, direction) {
+    setPlayerPosition: function (currentPlayerId, direction) { //TODO Refactor
       var currentPlayer = this.getPlayerById(currentPlayerId);
       var possible = true;
 
