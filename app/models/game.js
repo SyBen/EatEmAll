@@ -19,11 +19,12 @@ define(['app/models/player'], function (Player) {
       
       var xPosition = 0,
           yPosition = 0;
+      
       while(this.isSomeoneAt(xPosition, yPosition)){
         xPosition = Math.floor(Math.random()*50);
         yPosition = Math.floor(Math.random()*50);
-        
       }
+      
       var player = new Player(nickname, xPosition, yPosition);
       this.players.push(player);
       
