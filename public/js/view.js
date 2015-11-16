@@ -7,8 +7,8 @@ define([""], function () {
       $("#usersDescriptionBox").empty();
     },
 
-    addPlayerInList: function (player) {
-      $("#usersDescriptionBox").append("<li>" + player._nickname + "</li>");
+    addPlayerInList: function (nickname) {
+      $("#usersDescriptionBox").append("<li>" + nickname + "</li>");
     },
 
     displayNicknameBox: function () {

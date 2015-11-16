@@ -7,15 +7,15 @@ define(function () {
       throw new TypeError("Player constructor cannot be called as a function.");
     }
 
-    this._nickname = nickname;
-    this._position = {
+    this.nickname = nickname;
+    this.position = {
       x: 0,
       y: 0
     };
 
-    this._points = 0;
+    this.points = 0;
 
-    console.log("Player " + this._nickname + " created !");
+    console.log("Player " + this.nickname + " created !");
 
   }
 
@@ -24,35 +24,35 @@ define(function () {
     constructor: Player,
 
     getNickname: function () {
-      return this._nickname;
+      return this.nickname;
     },
 
     getXPosition: function () {
-      return this._position.x;
+      return this.position.x;
     },
 
     setXPosition: function (x) {
-      this._position.x = x;
+      this.position.x = x;
     },
 
     getYPosition: function () {
-      return this._position.y;
+      return this.position.y;
     },
 
     setYPosition: function (y) {
-      this._position.y = y;
+      this.position.y = y;
     },
 
     getPoints: function () {
-      return this._points;
+      return this.points;
     },
 
     setPoints: function (points) {
-      this._points = points;
+      this.points = points;
     },
 
     toString: function () {
-      return "Player " + this._nickname + " in position (" + this._position.x + ", " + this._position.y + ") have " + this._points + " points.";
+      return "Player " + this.nickname + " in position (" + this.position.x + ", " + this.position.y + ") have " + this.points + " points.";
     }
   };
 

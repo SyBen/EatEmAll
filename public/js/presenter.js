@@ -1,5 +1,5 @@
-define(["view", "manager"], function (view, manager) {
-  "use script";
+define(['view', 'manager'], function (view, manager) {
+  'use script';
 
   return {
 
@@ -14,9 +14,15 @@ define(["view", "manager"], function (view, manager) {
       view.emptyPlayersList();
 
       playersList.forEach(function (player) {
-        view.addPlayerInList(player);
+        view.addPlayerInList(player.nickname);
       });
 
+    },
+    
+    _updateGame: function (game) {
+      
+      
+      
     },
 
     /*************
@@ -24,26 +30,26 @@ define(["view", "manager"], function (view, manager) {
     *************/
 
     _onLeftKeyPressHandler: function () {
-      manager.goTo("left");
+      manager.goTo('left');
     },
     
     _onRightKeyPressHandler: function () {
-      manager.goTo("right");
+      manager.goTo('right');
     },
     
     _onUpKeyPressHandler: function () {
-      manager.goTo("up");
+      manager.goTo('up');
     },
     
     _onDownKeyPressHandler: function () {
-      manager.goTo("down");
+      manager.goTo('down');
     },
     
     _onNicknameBoxSubmitHandler: function () {
 
-      $("#nicknameBox").on('submit', function (evt) {
+      $('#nicknameBox').on('submit', function (evt) {
         evt.preventDefault();
-        var nickname = $("#nickname").val();
+        var nickname = $('#nickname').val();
 
         if (nickname.length > 0) {
           manager.joinGame(nickname);
@@ -88,13 +94,14 @@ define(["view", "manager"], function (view, manager) {
 
     initializeReceivers: function () {
 
-      manager.initializeSocketReceiver("updateGame", function (game) {
+      manager.initializeSocketReceiver('updateGame', function (game) {
         console.log(game);
         this._setPlayers(game.players);
+        this._updateGame(game);
       }.bind(this));
 
-      manager.initializeSocketReceiver("inGame", function () {
-        console.log("ingame recu");
+      manager.initializeSocketReceiver('inGame', function () {
+        console.log('Vous entrez dans le jeu !');
         this._intializeGameListeners();
       }.bind(this));
     }
