@@ -14,8 +14,8 @@ define(["service"], function (service) {
     },
 
     joinGame: function (nickname) {
-
-      service.send("joinGame", nickname);
+    
+      service.send("joinGame");
 
     },
     

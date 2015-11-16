@@ -2,6 +2,8 @@ define(['view', 'manager'], function (view, manager) {
   'use script';
 
   return {
+    
+    gameContainer: document.getElementById("game-container"),
 
     askToJoinGame: function () {
 
@@ -21,7 +23,13 @@ define(['view', 'manager'], function (view, manager) {
     
     _updateGame: function (game) {
       
+      var ctx = this.gameContainer.getContext("2d");
+      ctx.clearRect(0, 0, this.gameContainer.width, this.gameContainer.height);
       
+      game.players.forEach( function (player) {
+        ctx.fillStyle = player.color;
+        ctx.fillRect((player.position.x*10)%500, (player.position.y*10)%500, 10, 10);
+      });     
       
     },
 
