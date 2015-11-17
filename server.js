@@ -7,7 +7,7 @@ requirejs.config({
   nodeRequire: require
 });
 
-requirejs(['express', 'socket.io', 'http', 'app/models/player', 'app/models/game'], function (express, socketio, http, Player, Game) {
+requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express, http, socketio, Game) {
   'use strict';
 
   var app = express();
@@ -45,10 +45,13 @@ requirejs(['express', 'socket.io', 'http', 'app/models/player', 'app/models/game
     io.sockets.emit('updateGame', game);
 
     socket.on('joinGame', function (data) {
+      addedPlayer = true;
+      
       console.log(data);
       playerId = game.addPlayer(data);
       
       socket.emit('inGame');
+      
       io.sockets.emit('updateGame', game);
       
       socket.on('goTo', function (direction) {
@@ -57,13 +60,13 @@ requirejs(['express', 'socket.io', 'http', 'app/models/player', 'app/models/game
         io.sockets.emit('updateGame', game);
         
       });
-
+      
     });
 
     socket.on('disconnect', function () {
-      if (game.getPlayers(playerId) instanceof Player) {
-        console.log('Le joueur ' + game.getPlayers(playerId).getNickname() + ' s\'est déconnecté.');
-        game.removePlayer(game.getPlayers(playerId));
+      if (addedPlayer) {
+        console.log('Le joueur ' + game.getPlayerById(playerId).getNickname() + ' s\'est déconnecté.');
+        game.removePlayer(game.getPlayerById(playerId));
         io.sockets.emit('updateGame', game);
       } else {
         console.log('Un utilisateur s\'est déconnecté');

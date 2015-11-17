@@ -1,4 +1,4 @@
-define(['app/models/player'], function (Player) {
+define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
   'use strict';
 
   function Game(xSize, ySize) {
@@ -7,20 +7,40 @@ define(['app/models/player'], function (Player) {
       throw new TypeError('Game constructor cannot be called as a function.');
     }
 
+    this.pickups = [];
     this.players = [];
     this.grid = [];
     
+    //Initialize grid with nobody
     for(var i=0; i<25; i++) {
       this.grid[i] = [];
       for(var j=0; j<25; j++) {
           this.grid[i][j] = 0;
+      }
     }
-}
+    
+    for(var k =0; k < 5; k++){
+      this.addPickup();
+    }
   }
 
   Game.prototype = {
 
     constructor: Game,
+    
+    addPickup: function () {
+      var xPosition = Math.floor(Math.random()*25),
+          yPosition = Math.floor(Math.random()*25);
+      
+      while(this.isSomethingAt(xPosition, yPosition)){
+        xPosition = Math.floor(Math.random()*25);
+        yPosition = Math.floor(Math.random()*25);
+      }
+      
+      var pickup = new Pickup(xPosition, yPosition);
+      this.pickups.push(pickup);
+      this.grid[xPosition][yPosition] = -1;
+    },
 
     addPlayer: function (nickname) {
 
@@ -41,11 +61,16 @@ define(['app/models/player'], function (Player) {
 
     isSomeoneAt: function (xPosition, yPosition) {
       return this.grid[xPosition][yPosition] > 0;
+    },   
+    
+    isSomethingAt: function (xPosition, yPosition) {
+      return this.grid[xPosition][yPosition] !== 0;
     },
 
-    removePlayer: function (player) {
-      this.grid[player.getXPosition()][player.getYPosition()] = 0;
-      this.players.splice(this.players.indexOf(player), 1);
+    removePlayer: function (playerId) {
+      var currentPlayer = this.getPlayerById(playerId);
+      this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 0;
+      this.players.splice(playerId, 1);
     },
 
     getPlayers: function () {
@@ -92,7 +117,6 @@ define(['app/models/player'], function (Player) {
   };
   
   Number.prototype.mod = function(n) { return ((this%n)+n)%n; };
-  
   
  return Game;
 });

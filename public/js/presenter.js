@@ -2,7 +2,7 @@ define(['view', 'manager'], function (view, manager) {
   'use script';
 
   return {
-    
+
     gameContainer: document.getElementById("game-container"),
 
     askToJoinGame: function () {
@@ -15,22 +15,40 @@ define(['view', 'manager'], function (view, manager) {
     _setPlayers: function (playersList) {
       view.emptyPlayersList();
 
-      playersList.forEach(function (player) {
-        view.addPlayerInList(player.nickname);
-      });
-
+      for(var i=0; i<playersList.length; i++){
+        view.addPlayerInList(playersList[i].nickname);
+      }
     },
-    
+
     _updateGame: function (game) {
-      
+
       var ctx = this.gameContainer.getContext("2d");
       ctx.clearRect(0, 0, this.gameContainer.width, this.gameContainer.height);
       
-      game.players.forEach( function (player) {
-        ctx.fillStyle = player.color;
-        ctx.fillRect(player.position.x*20, player.position.y*20, 20, 20);
-      });     
+      ctx.fillStyle = '#fff';
       
+      var x, y;
+      //Draw Pickups
+      for(var i=0; i<game.pickups.length; i++){
+        x = game.pickups[i].position.x*20;
+        y = game.pickups[i].position.y*20;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + 20, y);
+        ctx.lineTo(x + 10, y + 20);
+        ctx.fill();
+        ctx.closePath();
+      }   
+      
+      //Draw Players
+      for(var j=0; j<game.players.length; j++){
+        x = game.players[j].position.x*20;
+        y = game.players[j].position.y*20;
+        
+        ctx.fillStyle = game.players[j].color;
+        ctx.fillRect(x, y, 20, 20);
+      }
+
     },
 
     /*************
@@ -40,19 +58,19 @@ define(['view', 'manager'], function (view, manager) {
     _onLeftKeyPressHandler: function () {
       manager.goTo('left');
     },
-    
+
     _onRightKeyPressHandler: function () {
       manager.goTo('right');
     },
-    
+
     _onUpKeyPressHandler: function () {
       manager.goTo('up');
     },
-    
+
     _onDownKeyPressHandler: function () {
       manager.goTo('down');
     },
-    
+
     _onNicknameBoxSubmitHandler: function () {
 
       $('#nicknameBox').on('submit', function (evt) {
@@ -68,32 +86,33 @@ define(['view', 'manager'], function (view, manager) {
 
       });
     },
-    
+
     _intializeGameListeners: function () {
-      
-      $(document).keydown(function(e) {
-        switch(e.which) {
-            case 37: // left
-            this._onLeftKeyPressHandler();
-            break;
 
-            case 38: // up
-            this._onUpKeyPressHandler();
-            break;
+      $(document).keydown(function (e) {
+        switch (e.which) {
+        case 37: // left
+          this._onLeftKeyPressHandler();
+          break;
 
-            case 39: // right
-            this._onRightKeyPressHandler();
-            break;
+        case 38: // up
+          this._onUpKeyPressHandler();
+          break;
 
-            case 40: // down
-            this._onDownKeyPressHandler();
-            break;
+        case 39: // right
+          this._onRightKeyPressHandler();
+          break;
 
-            default: return; // exit this handler for other keys
+        case 40: // down
+          this._onDownKeyPressHandler();
+          break;
+
+        default:
+          return; // exit this handler for other keys
         }
         e.preventDefault(); // prevent the default action (scroll / move caret)
       }.bind(this));
-      
+
     },
 
     /************
@@ -101,11 +120,12 @@ define(['view', 'manager'], function (view, manager) {
     *************/
 
     initializeReceivers: function () {
-
+      
       manager.initializeSocketReceiver('updateGame', function (game) {
         console.log(game);
         this._setPlayers(game.players);
         this._updateGame(game);
+        
       }.bind(this));
 
       manager.initializeSocketReceiver('inGame', function () {
