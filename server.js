@@ -39,15 +39,15 @@ requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express
   
   io.on('connection', function (socket) {
     var addedPlayer = false;
-    var playerId;
+    var playerId = socket.id;
     
     console.log('Un utilisateur s\'est connecté');
     io.sockets.emit('updateGame', game);
 
     socket.on('joinGame', function (nickname) {
       addedPlayer = true;
-
-      playerId = game.addPlayer(socket.id, nickname);
+      
+      game.addPlayer(playerId, nickname);
       
       socket.emit('inGame');
       

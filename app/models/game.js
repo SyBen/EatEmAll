@@ -8,7 +8,6 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
     }
 
     this.pickups = [];
-    this.players = [];
     this.playersHash = {};
     this.grid = [];
     
@@ -43,7 +42,7 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
       this.grid[xPosition][yPosition] = -1;
     },
 
-    addPlayer: function (socketId, nickname) {
+    addPlayer: function (playerId, nickname) {
 
       var xPosition = 0,
           yPosition = 0;
@@ -53,10 +52,10 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
         yPosition = Math.floor(Math.random()*25);
       }
       
-      var player = new Player(socketId, nickname, xPosition, yPosition);
-
-      this.grid[xPosition][yPosition] = this.players.push(player);
-      return this.players.indexOf(player);
+      var player = new Player(playerId, nickname, xPosition, yPosition);
+      this.playersHash[playerId] = player;
+      this.grid[xPosition][yPosition] = 1;
+      
     },
     
     isSomeoneAt: function (xPosition, yPosition) {
@@ -70,15 +69,15 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
     removePlayer: function (playerId) {
       var currentPlayer = this.getPlayerById(playerId);
       this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 0;
-      this.players.splice(playerId, 1);
+      delete this.playersHash[playerId];
     },
 
-    getPlayers: function () {
-      return this.players;
+    getPlayersHash: function () {
+      return this.playersHash;
     },
 
     getPlayerById: function (playerId) {
-      return this.players[playerId];
+      return this.playersHash[playerId];
     },
 
     setPlayerPosition: function (currentPlayerId, direction) {

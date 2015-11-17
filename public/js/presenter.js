@@ -12,11 +12,11 @@ define(['view', 'manager'], function (view, manager) {
 
     },
 
-    _setPlayers: function (playersList) {
+    _setPlayers: function (playersHash) {
       view.emptyPlayersList();
 
-      for(var i=0; i<playersList.length; i++){
-        view.addPlayerInList(playersList[i].nickname);
+      for(var key in playersHash){
+        view.addPlayerInList(playersHash[key].nickname);
       }
     },
 
@@ -42,11 +42,11 @@ define(['view', 'manager'], function (view, manager) {
       
       ctx.fillStyle = '#000';
       //Draw Players
-      for(var j=0; j<game.players.length; j++){
-        x = game.players[j].position.x*20;
-        y = game.players[j].position.y*20;
+      for(var key in game.playersHash){
+        x = game.playersHash[key].position.x*20;
+        y = game.playersHash[key].position.y*20;
         
-        ctx.fillStyle = game.players[j].color;
+        ctx.fillStyle = game.playersHash[key].color;
         ctx.fillRect(x, y, 20, 20);
       }
 
@@ -124,7 +124,7 @@ define(['view', 'manager'], function (view, manager) {
       
       manager.initializeSocketReceiver('updateGame', function (game) {
         console.log(game);
-        this._setPlayers(game.players);
+        this._setPlayers(game.playersHash);
         this._updateGame(game);
         
       }.bind(this));
