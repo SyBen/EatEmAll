@@ -1,12 +1,13 @@
 define(function () {
   "use strict";
 
-  function Player(nickname, xPosition, yPosition) {
+  function Player(socketId, nickname, xPosition, yPosition) {
 
     if (!(this instanceof Player)) {
       throw new TypeError("Player constructor cannot be called as a function.");
     }
 
+    this.id = socketId;
     this.nickname = nickname;
     this.position = {
       x: xPosition,

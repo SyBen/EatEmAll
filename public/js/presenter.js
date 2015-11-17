@@ -25,9 +25,9 @@ define(['view', 'manager'], function (view, manager) {
       var ctx = this.gameContainer.getContext("2d");
       ctx.clearRect(0, 0, this.gameContainer.width, this.gameContainer.height);
       
-      ctx.fillStyle = '#fff';
-      
       var x, y;
+      
+      ctx.fillStyle = '#fff';
       //Draw Pickups
       for(var i=0; i<game.pickups.length; i++){
         x = game.pickups[i].position.x*20;
@@ -40,6 +40,7 @@ define(['view', 'manager'], function (view, manager) {
         ctx.closePath();
       }   
       
+      ctx.fillStyle = '#000';
       //Draw Players
       for(var j=0; j<game.players.length; j++){
         x = game.players[j].position.x*20;

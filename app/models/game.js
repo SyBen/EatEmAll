@@ -9,6 +9,7 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
 
     this.pickups = [];
     this.players = [];
+    this.playersHash = {};
     this.grid = [];
     
     //Initialize grid with nobody
@@ -42,7 +43,7 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
       this.grid[xPosition][yPosition] = -1;
     },
 
-    addPlayer: function (nickname) {
+    addPlayer: function (socketId, nickname) {
 
       var xPosition = 0,
           yPosition = 0;
@@ -52,13 +53,12 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
         yPosition = Math.floor(Math.random()*25);
       }
       
-      var player = new Player(nickname, xPosition, yPosition);
+      var player = new Player(socketId, nickname, xPosition, yPosition);
 
       this.grid[xPosition][yPosition] = this.players.push(player);
-      
       return this.players.indexOf(player);
     },
-
+    
     isSomeoneAt: function (xPosition, yPosition) {
       return this.grid[xPosition][yPosition] > 0;
     },   

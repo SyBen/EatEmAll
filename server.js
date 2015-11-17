@@ -44,11 +44,10 @@ requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express
     console.log('Un utilisateur s\'est connecté');
     io.sockets.emit('updateGame', game);
 
-    socket.on('joinGame', function (data) {
+    socket.on('joinGame', function (nickname) {
       addedPlayer = true;
-      
-      console.log(data);
-      playerId = game.addPlayer(data);
+
+      playerId = game.addPlayer(socket.id, nickname);
       
       socket.emit('inGame');
       
@@ -66,7 +65,7 @@ requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express
     socket.on('disconnect', function () {
       if (addedPlayer) {
         console.log('Le joueur ' + game.getPlayerById(playerId).getNickname() + ' s\'est déconnecté.');
-        game.removePlayer(game.getPlayerById(playerId));
+        game.removePlayer(playerId);
         io.sockets.emit('updateGame', game);
       } else {
         console.log('Un utilisateur s\'est déconnecté');
