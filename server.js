@@ -35,31 +35,31 @@ requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express
   ******************/
   var io = socketio.listen(server);
   var game = new Game();
-  
-  
+
+
   io.on('connection', function (socket) {
     var addedPlayer = false;
     var playerId = socket.id;
-    
+
     console.log('Un utilisateur s\'est connecté');
     io.sockets.emit('updateGame', game);
 
     socket.on('joinGame', function (nickname) {
       addedPlayer = true;
-      
+
       game.addPlayer(playerId, nickname);
-      
+
       socket.emit('inGame');
-      
+
       io.sockets.emit('updateGame', game);
-      
+
       socket.on('goTo', function (direction) {
-        
+
         game.setPlayerPosition(playerId, direction);
         io.sockets.emit('updateGame', game);
-        
+
       });
-      
+
     });
 
     socket.on('disconnect', function () {

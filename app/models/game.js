@@ -7,10 +7,9 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
       throw new TypeError('Game constructor cannot be called as a function.');
     }
 
-    this.pickups = [];
     this.playersHash = {};
     this.grid = [];
-    
+
     //Initialize grid with nobody
     for(var i=0; i<25; i++) {
       this.grid[i] = [];
@@ -18,7 +17,7 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
           this.grid[i][j] = 0;
       }
     }
-    
+
     for(var k =0; k < 5; k++){
       this.addPickup();
     }
@@ -27,18 +26,17 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
   Game.prototype = {
 
     constructor: Game,
-    
+
     addPickup: function () {
       var xPosition = Math.floor(Math.random()*25),
           yPosition = Math.floor(Math.random()*25);
-      
+
       while(this.isSomethingAt(xPosition, yPosition)){
         xPosition = Math.floor(Math.random()*25);
         yPosition = Math.floor(Math.random()*25);
       }
-      
+
       var pickup = new Pickup(xPosition, yPosition);
-      this.pickups.push(pickup);
       this.grid[xPosition][yPosition] = -1;
     },
 
@@ -46,22 +44,22 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
 
       var xPosition = 0,
           yPosition = 0;
-      
+
       while(this.isSomeoneAt(xPosition, yPosition)){
         xPosition = Math.floor(Math.random()*25);
         yPosition = Math.floor(Math.random()*25);
       }
-      
+
       var player = new Player(playerId, nickname, xPosition, yPosition);
       this.playersHash[playerId] = player;
       this.grid[xPosition][yPosition] = 1;
-      
+
     },
-    
+
     isSomeoneAt: function (xPosition, yPosition) {
       return this.grid[xPosition][yPosition] > 0;
-    },   
-    
+    },
+
     isSomethingAt: function (xPosition, yPosition) {
       return this.grid[xPosition][yPosition] !== 0;
     },
@@ -82,40 +80,54 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
 
     setPlayerPosition: function (currentPlayerId, direction) {
       var currentPlayer = this.getPlayerById(currentPlayerId);
-      
       this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 0;
-      
+
       switch(direction){
         case 'left':
           if(! this.isSomeoneAt((currentPlayer.getXPosition()-1).mod(25), currentPlayer.getYPosition().mod(25)) ){
             currentPlayer.setXPosition((currentPlayer.getXPosition()-1).mod(25));
+            if(this.isSomethingAt((currentPlayer.getXPosition()-1).mod(25), currentPlayer.getYPosition().mod(25))) {
+              currentPlayer.addPoint();
+              this.addPickup();
+            }
           }
           break;
         case 'right':
           if(! this.isSomeoneAt((currentPlayer.getXPosition()+1).mod(25), currentPlayer.getYPosition().mod(25)) ){
             currentPlayer.setXPosition((currentPlayer.getXPosition()+1).mod(25));
+            if(this.isSomethingAt((currentPlayer.getXPosition()+1).mod(25), currentPlayer.getYPosition().mod(25))) {
+              currentPlayer.addPoint();
+              this.addPickup();
+            }
           }
           break;
         case 'up':
           if(! this.isSomeoneAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()-1).mod(25)) ){
             currentPlayer.setYPosition((currentPlayer.getYPosition()-1).mod(25));
+            if(this.isSomethingAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()-1).mod(25))) {
+              currentPlayer.addPoint();
+              this.addPickup();
+            }
           }
           break;
         case 'down':
           if(! this.isSomeoneAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()+1).mod(25)) ){
             currentPlayer.setYPosition((currentPlayer.getYPosition()+1).mod(25));
+            if(this.isSomethingAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()+1).mod(25))) {
+              currentPlayer.addPoint();
+              this.addPickup();
+            }
           }
-          break; 
-          
+          break;
+
       }
-      
+
       this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 1;
     },
-    
 
   };
-  
+
   Number.prototype.mod = function(n) { return ((this%n)+n)%n; };
-  
+
  return Game;
 });

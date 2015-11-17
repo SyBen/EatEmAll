@@ -13,7 +13,7 @@ define(function () {
       x: xPosition,
       y: yPosition
     };
-    
+
     this.color = '#'+Math.floor(Math.random()*16777215).toString(16);
 
     this.points = 0;
@@ -52,6 +52,10 @@ define(function () {
 
     setPoints: function (points) {
       this.points = points;
+    },
+
+    addPoint: function() {
+      this.points++;
     },
 
     toString: function () {
