@@ -3,25 +3,25 @@ define(['view', 'manager'], function (view, manager) {
 
   return {
 
-    gameContainer: document.getElementById("game-container"),
+    _askToJoinGame: function () {
+      var title = "Bienvenue sur le Jeu EatEmAll";
+      var body = "<form class=\"form-inline\" id=\"nicknameBox\"><div class=\"input-group\"><input type=\"text\" name=\"nickname\" id=\"nickname\" placeholder=\"Entrez votre surnom\" class=\"form-control\"><span class=\"input-group-btn\"><button id=\submitNicknameBtn\" class=\"btn\" type=\"submit\">Jouer !</button></span></div></form>";
 
-    askToJoinGame: function () {
-
-      view.displayNicknameBox();
+      view.displayModal(title, body);
       this._onNicknameBoxSubmitHandler();
 
     },
 
     _setPlayers: function (playersHash) {
       view.emptyPlayersList();
-      
+
       var playersArray = [];
-      for(var key in playersHash){
+      for (var key in playersHash) {
         playersArray.push(playersHash[key]);
       }
-      
+
       //TODO sort by points
-      playersArray.sort(function(player1, player2) {
+      playersArray.sort(function (player1, player2) {
         if (player1.position.x < player2.position.x)
           return -1;
         else if (player1.position.x > player2.position.x)
@@ -29,42 +29,15 @@ define(['view', 'manager'], function (view, manager) {
         return 0;
       });
 
-     for(var j = 0; j<playersArray.length; j++){
+      for (var j = 0; j < playersArray.length; j++) {
         view.addPlayerInList(playersArray[j].nickname);
       }
     },
 
     _updateGame: function (game) {
-           
-      var ctx = this.gameContainer.getContext("2d");
-      ctx.clearRect(0, 0, this.gameContainer.width, this.gameContainer.height);
-      
-      var x, y;
-      
-      ctx.fillStyle = '#fff';
-      //Draw Pickups
-      for(var i=0; i<game.pickups.length; i++){
-        x = game.pickups[i].position.x*20;
-        y = game.pickups[i].position.y*20;  
-        ctx.beginPath();
-        ctx.arc(x+10, y+10, 8, 0, 2 * Math.PI, false);
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#f01c1c';
-        ctx.stroke();
-        ctx.closePath();
-      }   
-      
-      ctx.fillStyle = '#000';
-      //Draw Players
-      for(var key in game.playersHash){
-        x = game.playersHash[key].position.x*20;
-        y = game.playersHash[key].position.y*20;
-        
-        ctx.fillStyle = game.playersHash[key].color;
-        ctx.fillRect(x, y, 20, 20);
-      }
 
+      this._setPlayers(game.playersHash);
+      view.updateGameCanvas(game);
     },
 
     /*************
@@ -95,10 +68,11 @@ define(['view', 'manager'], function (view, manager) {
 
         if (nickname.length > 0) {
           manager.joinGame(nickname);
-          view.hideNicknameBox();
+          view.hideModal();
         } else {
-          view.displayNicknameBox();
+          this._askToJoinGame();
         }
+
 
       });
     },
@@ -136,12 +110,21 @@ define(['view', 'manager'], function (view, manager) {
     *************/
 
     initializeReceivers: function () {
-      
+
+      manager.initializeSocketReceiver('connect', function (game) {
+        this._askToJoinGame();
+
+      }.bind(this));
+
+      manager.initializeSocketReceiver('connect_error', function (game) {
+        this._askToJoinGame();
+
+      }.bind(this));
+
       manager.initializeSocketReceiver('updateGame', function (game) {
-        console.log(game);
-        this._setPlayers(game.playersHash);
+
         this._updateGame(game);
-        
+
       }.bind(this));
 
       manager.initializeSocketReceiver('inGame', function () {

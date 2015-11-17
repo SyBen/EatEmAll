@@ -5,10 +5,6 @@ define(["socketio"], function (io) {
 
     _socket: null,
 
-    _commands: {
-
-    },
-
     initializeConnection: function () {
       this._socket = io();
       console.log("Socket connectée au serveur");      

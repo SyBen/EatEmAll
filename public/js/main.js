@@ -4,7 +4,5 @@ require(["presenter", "manager"], function (presenter, manager) {
   manager.initializeConnection();
     
   presenter.initializeReceivers();
-  
-  presenter.askToJoinGame();
-  
+    
 });
