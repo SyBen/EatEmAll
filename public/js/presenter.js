@@ -14,14 +14,28 @@ define(['view', 'manager'], function (view, manager) {
 
     _setPlayers: function (playersHash) {
       view.emptyPlayersList();
-
+      
+      var playersArray = [];
       for(var key in playersHash){
-        view.addPlayerInList(playersHash[key].nickname);
+        playersArray.push(playersHash[key]);
+      }
+      
+      //TODO sort by points
+      playersArray.sort(function(player1, player2) {
+        if (player1.position.x < player2.position.x)
+          return -1;
+        else if (player1.position.x > player2.position.x)
+          return 1;
+        return 0;
+      });
+
+     for(var j = 0; j<playersArray.length; j++){
+        view.addPlayerInList(playersArray[j].nickname);
       }
     },
 
     _updateGame: function (game) {
-
+           
       var ctx = this.gameContainer.getContext("2d");
       ctx.clearRect(0, 0, this.gameContainer.width, this.gameContainer.height);
       
@@ -31,12 +45,13 @@ define(['view', 'manager'], function (view, manager) {
       //Draw Pickups
       for(var i=0; i<game.pickups.length; i++){
         x = game.pickups[i].position.x*20;
-        y = game.pickups[i].position.y*20;
+        y = game.pickups[i].position.y*20;  
         ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + 20, y);
-        ctx.lineTo(x + 10, y + 20);
+        ctx.arc(x+10, y+10, 8, 0, 2 * Math.PI, false);
         ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#f01c1c';
+        ctx.stroke();
         ctx.closePath();
       }   
       
