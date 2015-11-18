@@ -30,7 +30,7 @@ define(['view', 'manager'], function (view, manager) {
       });
 
       for (var j = 0; j < playersArray.length; j++) {
-        view.addPlayerInList(playersArray[j]);
+        view.addPlayerInList(playersArray[j], j+1);
       }
     },
 

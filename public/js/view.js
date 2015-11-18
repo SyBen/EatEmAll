@@ -1,12 +1,12 @@
-define([""], function () {
-  "use script";
+define([''], function () {
+  'use script';
 
   return {
 
-    _gameContainer: document.getElementById("game-container"),
+    _gameContainer: document.getElementById('game-container'),
     
     updateGameCanvas: function (game) {
-      var ctx = this._gameContainer.getContext("2d");
+      var ctx = this._gameContainer.getContext('2d');
       ctx.clearRect(0, 0, this._gameContainer.width, this._gameContainer.height);
       
       var x, y;
@@ -38,29 +38,37 @@ define([""], function () {
     },
     
     emptyPlayersList: function (user) {
-      $("#usersDescriptionBox").empty();
+      $('#usersDescriptionTable').empty();
     },
 
-    addPlayerInList: function (player) {
-      $("#usersDescriptionBox").append("<li class=\"presentation\" style=\"color:"+player.color+"\">" + player.nickname + " <span class=\"badge\">" + player.points + "</span></li>");
+    addPlayerInList: function (player, pos) {
+      $('#usersDescriptionTable').append('<tr><td>'+pos+'</td><td>'+player.nickname+'</td><td><span class="badge" style="background-color:'+player.color+'">'+player.points+'</span></td></tr>');
+      
+//
+//<tr>
+//  <td>1</td>
+//  <td>Mark</td>
+//  <td>Otto</td>
+//  <td>@mdo</td>
+//</tr>
     },
 
     displayModal: function (title, body) {
 
-      $("#modalBox .modal-title").html(title);
+      $('#modalBox .modal-title').html(title);
 
-      $("#modalBox .modal-body").html(body);
+      $('#modalBox .modal-body').html(body);
 
       $('#modalBox').modal('show');
     },
 
     hideModal: function () {
 
-      $("#modalBox .modal-title").html("");
+      $('#modalBox .modal-title').html('');
 
-      $("#modalBox .modal-body").html("");
+      $('#modalBox .modal-body').html('');
 
-      $('#modalBox').modal("hide");
+      $('#modalBox').modal('hide');
     },
 
   };
