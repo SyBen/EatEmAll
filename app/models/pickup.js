@@ -1,9 +1,9 @@
 define(function () {
-  "use strict";
+  'use strict';
 
   function Pickup(xPosition, yPosition) {
     if(!(this instanceof Pickup)) {
-      throw new TypeError("Pickup constructor cannot be called as a function.");
+      throw new TypeError('Pickup constructor cannot be called as a function.');
     }
 
 //    this.xSize = xSize;
@@ -14,7 +14,7 @@ define(function () {
       y: yPosition
     };
 
-    console.log("Pickup created at x : " + this.position.x + " y : " + this.position.y);
+    console.log('Pickup created at x : ' + this.position.x + ' y : ' + this.position.y);
 
   }
 

@@ -1,10 +1,10 @@
 define(function () {
-  "use strict";
+  'use strict';
 
   function Player(socketId, nickname, xPosition, yPosition) {
 
     if (!(this instanceof Player)) {
-      throw new TypeError("Player constructor cannot be called as a function.");
+      throw new TypeError('Player constructor cannot be called as a function.');
     }
 
     this.id = socketId;
@@ -18,7 +18,7 @@ define(function () {
 
     this.points = 0;
 
-    console.log("Player " + this.nickname + " created !");
+    console.log('Player ' + this.nickname + ' created !');
 
   }
 
@@ -59,7 +59,7 @@ define(function () {
     },
 
     toString: function () {
-      return "Player " + this.nickname + " in position (" + this.position.x + ", " + this.position.y + ") have " + this.points + " points.";
+      return 'Player ' + this.nickname + ' in position (' + this.position.x + ', ' + this.position.y + ') have ' + this.points + ' points.';
     }
   };
 

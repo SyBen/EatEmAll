@@ -10,6 +10,7 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
     this.playersHash = {};
     this.grid = [];
     this.pickups = [];
+    this.pointsLimit = 20;
 
     //Initialize grid with nobody
     for(var i=0; i<25; i++) {
@@ -43,7 +44,6 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
     },
     
     removePickup: function (xPosition, yPosition) {
-      console.log("bouh");
       this.pickups = this.pickups.filter(function (pickup){
         return !(pickup.getX() === xPosition && pickup.getY() === yPosition);
       });
@@ -137,6 +137,21 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
       }
 
       this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 1;
+    },
+    
+    restartGame: function () {
+      
+    for (var i = 0; i < 25; i++) {
+      this.grid[i] = [];
+      for (var j = 0; j < 25; j++) {
+        this.grid[i][j] = 0;
+      }
+    }
+      
+    for(var k =0; k < 5; k++){
+      this.addPickup();
+    }
+
     },
 
   };
