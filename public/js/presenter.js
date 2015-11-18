@@ -22,11 +22,11 @@ define(['view', 'manager'], function (view, manager) {
 
       //TODO sort by points
       playersArray.sort(function (player1, player2) {
-        if (player1.position.x < player2.position.x)
-          return -1;
-        else if (player1.position.x > player2.position.x)
-          return 1;
-        return 0;
+//        if (player1.position.x < player2.position.x)
+//          return -1;
+//        else if (player1.position.x > player2.position.x)
+//          return 1;
+        return player2.points - player1.points;
       });
 
       for (var j = 0; j < playersArray.length; j++) {

@@ -31,3 +31,11 @@ body{
   padding: 0;
   box-sizing: border-box;
 }
+
+#usersDescriptionBox {
+  list-style: square;
+}
+
+#usersDescriptionBox li{
+  color:aquamarine;
+}

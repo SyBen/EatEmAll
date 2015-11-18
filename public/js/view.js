@@ -42,7 +42,7 @@ define([""], function () {
     },
 
     addPlayerInList: function (player) {
-      $("#usersDescriptionBox").append("<li class=\"presentation\">" + player.nickname + " <span class=\"badge\">" + player.points + "</span></li>");
+      $("#usersDescriptionBox").append("<li class=\"presentation\" style=\"color:"+player.color+"\">" + player.nickname + " <span class=\"badge\">" + player.points + "</span></li>");
     },
 
     displayModal: function (title, body) {
