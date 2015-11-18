@@ -22,11 +22,11 @@ define(function () {
     constructor: Pickup,
 
     getX: function() {
-      return this.x;
+      return this.position.x;
     },
 
     getY: function() {
-      return this.y;
+      return this.position.y;
     }
   };
 

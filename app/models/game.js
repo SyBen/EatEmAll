@@ -9,6 +9,7 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
 
     this.playersHash = {};
     this.grid = [];
+    this.pickups = [];
 
     //Initialize grid with nobody
     for(var i=0; i<25; i++) {
@@ -37,7 +38,15 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
       }
 
       var pickup = new Pickup(xPosition, yPosition);
+      this.pickups.push(pickup);
       this.grid[xPosition][yPosition] = -1;
+    },
+    
+    removePickup: function (xPosition, yPosition) {
+      console.log("bouh");
+      this.pickups = this.pickups.filter(function (pickup){
+        return !(pickup.getX() === xPosition && pickup.getY() === yPosition);
+      });
     },
 
     addPlayer: function (playerId, nickname) {
@@ -80,14 +89,16 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
 
     setPlayerPosition: function (currentPlayerId, direction) {
       var currentPlayer = this.getPlayerById(currentPlayerId);
+      
       this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 0;
 
       switch(direction){
         case 'left':
           if(! this.isSomeoneAt((currentPlayer.getXPosition()-1).mod(25), currentPlayer.getYPosition().mod(25)) ){
             currentPlayer.setXPosition((currentPlayer.getXPosition()-1).mod(25));
-            if(this.isSomethingAt((currentPlayer.getXPosition()-1).mod(25), currentPlayer.getYPosition().mod(25))) {
+            if(this.isSomethingAt(currentPlayer.getXPosition().mod(25), currentPlayer.getYPosition().mod(25))) {
               currentPlayer.addPoint();
+              this.removePickup(currentPlayer.getXPosition(), currentPlayer.getYPosition());
               this.addPickup();
             }
           }
@@ -95,8 +106,9 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
         case 'right':
           if(! this.isSomeoneAt((currentPlayer.getXPosition()+1).mod(25), currentPlayer.getYPosition().mod(25)) ){
             currentPlayer.setXPosition((currentPlayer.getXPosition()+1).mod(25));
-            if(this.isSomethingAt((currentPlayer.getXPosition()+1).mod(25), currentPlayer.getYPosition().mod(25))) {
+            if(this.isSomethingAt(currentPlayer.getXPosition().mod(25), currentPlayer.getYPosition().mod(25))) {
               currentPlayer.addPoint();
+              this.removePickup(currentPlayer.getXPosition(), currentPlayer.getYPosition());
               this.addPickup();
             }
           }
@@ -104,8 +116,9 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
         case 'up':
           if(! this.isSomeoneAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()-1).mod(25)) ){
             currentPlayer.setYPosition((currentPlayer.getYPosition()-1).mod(25));
-            if(this.isSomethingAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()-1).mod(25))) {
+            if(this.isSomethingAt(currentPlayer.getXPosition().mod(25), currentPlayer.getYPosition().mod(25))) {
               currentPlayer.addPoint();
+              this.removePickup(currentPlayer.getXPosition(), currentPlayer.getYPosition());
               this.addPickup();
             }
           }
@@ -113,8 +126,9 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
         case 'down':
           if(! this.isSomeoneAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()+1).mod(25)) ){
             currentPlayer.setYPosition((currentPlayer.getYPosition()+1).mod(25));
-            if(this.isSomethingAt(currentPlayer.getXPosition().mod(25), (currentPlayer.getYPosition()+1).mod(25))) {
+            if(this.isSomethingAt(currentPlayer.getXPosition().mod(25), currentPlayer.getYPosition().mod(25))) {
               currentPlayer.addPoint();
+              this.removePickup(currentPlayer.getXPosition(), currentPlayer.getYPosition());
               this.addPickup();
             }
           }

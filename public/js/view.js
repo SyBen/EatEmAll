@@ -41,8 +41,8 @@ define([""], function () {
       $("#usersDescriptionBox").empty();
     },
 
-    addPlayerInList: function (nickname) {
-      $("#usersDescriptionBox").append("<li>" + nickname + "</li>");
+    addPlayerInList: function (player) {
+      $("#usersDescriptionBox").append("<li class=\"presentation\">" + player.nickname + " <span class=\"badge\">" + player.points + "</span></li>");
     },
 
     displayModal: function (title, body) {
