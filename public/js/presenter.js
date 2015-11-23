@@ -3,6 +3,8 @@ define(['view', 'manager'], function (view, manager) {
 
   return {
 
+    _keyboardConfigured: false,
+    
     _askToJoinGame: function () {
       var title = "Bienvenue sur le Jeu EatEmAll";
       var body = "<form class=\"form-inline\" id=\"nicknameBox\"><div class=\"input-group\"><input type=\"text\" name=\"nickname\" id=\"nickname\" placeholder=\"Entrez votre surnom\" class=\"form-control\"><span class=\"input-group-btn\"><button id=\submitNicknameBtn\" class=\"btn\" type=\"submit\">Jouer !</button></span></div></form>";
@@ -88,16 +90,26 @@ define(['view', 'manager'], function (view, manager) {
     
     _onStartGameHandler: function (game) {
       view.hideModal();
-      console.log(game);
-      this._intializeGameListeners();
+      
+      if(!this._keyboardConfigured){
+        this._intializeGameListeners();
+        this._keyboardConfigured = true;
+      }
+      
       this._setPlayers(game.playersHash);
       view.updateGameCanvas(game);
     },
     
     _onEndGameHandler: function (game) {
+      
+      if(this._keyboardConfigured){
+        
+        $(document).off('keydown');
+        
+        this._keyboardConfigured = false;
+      }
+      
       var title = 'Jeu terminé';
-      
-      
       var playersArray = [];
       for (var key in game.playersHash) {
         playersArray.push(game.playersHash[key]);
@@ -107,7 +119,7 @@ define(['view', 'manager'], function (view, manager) {
         return player2.points - player1.points;
       });
       
-      var body = 'Le joueur <b style="color:'+playersArray[0].color+'; text-transform: capitalize;">' + playersArray[0].nickname + '</b> a gagné la partie';
+      var body = 'Le joueur <b style="color:'+playersArray[0].color+'; text-transform: capitalize;">' + playersArray[0].nickname + '</b> a gagné la partie.<br> Ne bougez pas, le jeu va recommencer dans quelques secondes ...';
       
       view.displayModal(title, body);
       

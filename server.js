@@ -59,14 +59,17 @@ requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express
       socket.on('goTo', function (direction) {
 
         game.setPlayerPosition(playerId, direction);
-        console.log(game.getPlayerById(playerId).getPoints());
+        
         if(game.getPlayerById(playerId).getPoints() == game.pointsLimit) {
-          console.log("bouuuuh");
           io.sockets.emit('endGame', game);
+          setTimeout(function () {
+            game.cleanGame();
+             game.startGame();
+            io.sockets.emit('startGame', game);
+          }, 5000);
         }
-        else {
-          io.sockets.emit('updateGame', game);
-        }
+        io.sockets.emit('updateGame', game);
+        
         
 
       });

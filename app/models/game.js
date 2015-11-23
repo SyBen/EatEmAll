@@ -181,26 +181,6 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
       this.pickups.splice(0, this.pickups.length);
     },
     
-    restartGame: function () {
-      
-      this.cleanGame();
-
-      //Add pickups
-      for (var k = 0; k < this.nbPickups; k++) {
-        this.addPickup();
-      }
-      
-      //Clean player points and update the grid model
-      var player;
-      for (var key in this.playersHash){
-        player = this.playersHash[key];
-        player.points = 0;
-        this.grid[player.getXPosition()][player.getYPosition()] = 1;
-      }
-
-
-    },
-
   };
 
   Number.prototype.mod = function (n) {
