@@ -14,7 +14,7 @@ define(function () {
       y: yPosition
     };
 
-    this.color = color; 
+    this.color = color;
 
     this.points = 0;
 
@@ -54,7 +54,7 @@ define(function () {
       this.points = points;
     },
 
-    addPoint: function() {
+    addPoint: function () {
       this.points++;
     },
 

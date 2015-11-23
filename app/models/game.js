@@ -6,14 +6,14 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
     if (!(this instanceof Game)) {
       throw new TypeError('Game constructor cannot be called as a function.');
     }
-    
+
 
     this.playersHash = {};
     this.pointsLimit = pointsLimit;
-    
+
     this.nbPickups = nbPickups;
     this.pickups = [];
-    
+
     this.grid = [];
 
     //Initialize grid with nobody
@@ -49,20 +49,20 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
         return !(pickup.getX() === xPosition && pickup.getY() === yPosition);
       });
     },
-    
+
     addPlayer: function (playerId, nickname) {
 
       var xPosition = 0,
         yPosition = 0;
-      var color = '#'+Math.floor(Math.random()*16777215).toString(16);
-      
+      var color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
       while (this.isSomeoneAt(xPosition, yPosition)) {
         xPosition = Math.floor(Math.random() * 25);
         yPosition = Math.floor(Math.random() * 25);
       }
-      
-      while(this.existingColor(color)){
-        color = '#'+Math.floor(Math.random()*16777215).toString(16);
+
+      while (this.existingColor(color)) {
+        color = '#' + Math.floor(Math.random() * 16777215).toString(16);
       }
 
       var player = new Player(playerId, nickname, xPosition, yPosition, color);
@@ -70,18 +70,18 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
       this.grid[xPosition][yPosition] = 1;
 
     },
-    
-    existingColor: function (color){
+
+    existingColor: function (color) {
       var boolColor = false;
-      for(var key in this.playersHash){
-        if(this.playersHash[key].color === color){
+      for (var key in this.playersHash) {
+        if (this.playersHash[key].color === color) {
           boolColor = true;
         }
       }
-      
+
       return boolColor;
     },
-    
+
     removePlayer: function (playerId) {
       var currentPlayer = this.getPlayerById(playerId);
       this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 0;
@@ -155,7 +155,7 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
 
       this.grid[currentPlayer.getXPosition()][currentPlayer.getYPosition()] = 1;
     },
-    
+
     startGame: function () {
       for (var k = 0; k < this.nbPickups; k++) {
         this.addPickup();
@@ -170,17 +170,17 @@ define(['app/models/player', 'app/models/pickup'], function (Player, Pickup) {
           this.grid[i][j] = 0;
         }
       }
-      
+
       var player;
-      for (var key in this.playersHash){
+      for (var key in this.playersHash) {
         player = this.playersHash[key];
         player.points = 0;
         this.grid[player.getXPosition()][player.getYPosition()] = 1;
       }
-      
+
       this.pickups.splice(0, this.pickups.length);
     },
-    
+
   };
 
   Number.prototype.mod = function (n) {

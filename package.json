@@ -12,7 +12,24 @@
   "dependencies": {
     "bower": "^1.5.3",
     "express": "^4.13.3",
+    "grunt": "^0.4.5",
+    "grunt-karma": "^0.12.1",
+    "karma": "^0.13.15",
     "requirejs": "^2.1.20",
     "socket.io": "~1.3.7"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "*",
+    "grunt-express-server": "*",
+    "grunt-open": "*",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-opera-launcher": "^0.3.0",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "karma-requirejs": "^0.2.2",
+    "karma-safari-launcher": "^0.1.1",
+    "load-grunt-tasks": "*",
+    "phantomjs": "^1.9.18"
   }
 }
