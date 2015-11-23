@@ -13,6 +13,9 @@ requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express
   var app = express();
   var port = 8080;
   var server = http.createServer(app);
+  
+  var pointsLimit = 5;
+  var nbPickups = 5;
 
 
   /******************
@@ -34,41 +37,66 @@ requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express
   Communication
   ******************/
   var io = socketio.listen(server);
-  var game = new Game();
+  var game = new Game(pointsLimit, nbPickups);
 
 
   io.on('connection', function (socket) {
     var addedPlayer = false;
     var playerId = socket.id;
 
-    console.log('Un utilisateur s\'est connecté');
+    console.log(playerId+' - ' + 'Un utilisateur s\'est connecté');
     io.sockets.emit('updateGame', game);
 
     socket.on('joinGame', function (nickname) {
+      console.log(playerId+' - ' + 'L\'utilisateur s\'est joint à la partie avec le pseudo :'+nickname);
+      
       addedPlayer = true;
-
+      
       game.addPlayer(playerId, nickname);
 
       socket.emit('inGame');
 
-      io.sockets.emit('updateGame', game);
-
       socket.on('goTo', function (direction) {
 
         game.setPlayerPosition(playerId, direction);
-        io.sockets.emit('updateGame', game);
+        console.log(game.getPlayerById(playerId).getPoints());
+        if(game.getPlayerById(playerId).getPoints() == game.pointsLimit) {
+          console.log("bouuuuh");
+          io.sockets.emit('endGame', game);
+        }
+        else {
+          io.sockets.emit('updateGame', game);
+        }
+        
 
       });
 
+      if(Object.keys(game.playersHash).length < 2){
+        socket.emit('waitingGame', game);
+      }     
+      else if(Object.keys(game.playersHash).length === 2){
+        game.startGame();
+        io.sockets.emit('startGame', game);
+      }
+      
     });
 
     socket.on('disconnect', function () {
       if (addedPlayer) {
-        console.log('Le joueur ' + game.getPlayerById(playerId).getNickname() + ' s\'est déconnecté.');
+        console.log(playerId+' - ' + 'Le joueur ' + game.getPlayerById(playerId).getNickname() + ' s\'est déconnecté.');
         game.removePlayer(playerId);
-        io.sockets.emit('updateGame', game);
+        
+        if(Object.keys(game.playersHash).length < 2){
+          console.log('endGame');
+          game.cleanGame();
+          io.sockets.emit('endGame', game);
+        }     
+        else {
+          io.sockets.emit('updateGame', game);
+        }
+        
       } else {
-        console.log('Un utilisateur s\'est déconnecté');
+        console.log(playerId+' - ' + 'Un utilisateur s\'est déconnecté');
       }
     });
 

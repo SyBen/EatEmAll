@@ -1,4 +1,4 @@
-define([''], function () {
+define([], function () {
   'use script';
 
   return {
@@ -44,13 +44,6 @@ define([''], function () {
     addPlayerInList: function (player, pos) {
       $('#usersDescriptionTable').append('<tr><td>'+pos+'</td><td>'+player.nickname+'</td><td><span class="badge" style="background-color:'+player.color+'">'+player.points+'</span></td></tr>');
       
-//
-//<tr>
-//  <td>1</td>
-//  <td>Mark</td>
-//  <td>Otto</td>
-//  <td>@mdo</td>
-//</tr>
     },
 
     displayModal: function (title, body) {
@@ -59,16 +52,17 @@ define([''], function () {
 
       $('#modalBox .modal-body').html(body);
 
-      $('#modalBox').modal('show');
+      $('#modalBox').modal('toggle');
     },
 
     hideModal: function () {
 
+      $('#modalBox').modal('hide');
+      
       $('#modalBox .modal-title').html('');
 
       $('#modalBox .modal-body').html('');
-
-      $('#modalBox').modal('hide');
+      
     },
 
   };

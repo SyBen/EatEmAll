@@ -20,12 +20,7 @@ define(['view', 'manager'], function (view, manager) {
         playersArray.push(playersHash[key]);
       }
 
-      //TODO sort by points
       playersArray.sort(function (player1, player2) {
-//        if (player1.position.x < player2.position.x)
-//          return -1;
-//        else if (player1.position.x > player2.position.x)
-//          return 1;
         return player2.points - player1.points;
       });
 
@@ -36,6 +31,7 @@ define(['view', 'manager'], function (view, manager) {
 
     _updateGame: function (game) {
 
+      console.log(game);
       this._setPlayers(game.playersHash);
       view.updateGameCanvas(game);
     },
@@ -67,8 +63,9 @@ define(['view', 'manager'], function (view, manager) {
         var nickname = $('#nickname').val();
 
         if (nickname.length > 0) {
-          manager.joinGame(nickname);
           view.hideModal();
+          manager.joinGame(nickname);
+          
         } else {
           this._askToJoinGame();
         }
@@ -77,6 +74,46 @@ define(['view', 'manager'], function (view, manager) {
       });
     },
 
+    _onWaitingGameHandler: function (game) {
+      var title = 'Dans l\'attente de joueurs supplémentaires';
+      var body = 'Veuillez attendre au moins un autre joueur pour commencer le jeu';
+      
+      
+      this._setPlayers(game.playersHash);
+      
+      setTimeout(function(){
+        view.displayModal(title, body);
+      }, 1000);      
+    },
+    
+    _onStartGameHandler: function (game) {
+      view.hideModal();
+      console.log(game);
+      this._intializeGameListeners();
+      this._setPlayers(game.playersHash);
+      view.updateGameCanvas(game);
+    },
+    
+    _onEndGameHandler: function (game) {
+      var title = 'Jeu terminé';
+      
+      
+      var playersArray = [];
+      for (var key in game.playersHash) {
+        playersArray.push(game.playersHash[key]);
+      }
+
+      playersArray.sort(function (player1, player2) {
+        return player2.points - player1.points;
+      });
+      
+      var body = 'Le joueur <b style="color:'+playersArray[0].color+'; text-transform: capitalize;">' + playersArray[0].nickname + '</b> a gagné la partie';
+      
+      view.displayModal(title, body);
+      
+      this._setPlayers(game.playersHash);
+    },
+    
     _intializeGameListeners: function () {
 
       $(document).keydown(function (e) {
@@ -122,14 +159,28 @@ define(['view', 'manager'], function (view, manager) {
       }.bind(this));
 
       manager.initializeSocketReceiver('updateGame', function (game) {
-
+        console.log('updateGame event');
         this._updateGame(game);
-
+      }.bind(this));      
+      
+      manager.initializeSocketReceiver('waitingGame', function (game) {
+        console.log('waitingGame event');
+        this._onWaitingGameHandler(game);
+      }.bind(this));      
+      
+      manager.initializeSocketReceiver('startGame', function (game) {
+        console.log('startGame event');
+        this._onStartGameHandler(game);
       }.bind(this));
 
       manager.initializeSocketReceiver('inGame', function () {
-        console.log('Vous entrez dans le jeu !');
-        this._intializeGameListeners();
+        console.log('inGame event');
+      }.bind(this));   
+      
+      manager.initializeSocketReceiver('endGame', function (game) {
+        console.log('endGame event');
+        this._updateGame(game);
+        this._onEndGameHandler(game);
       }.bind(this));
     }
 
