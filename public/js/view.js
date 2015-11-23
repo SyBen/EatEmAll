@@ -30,7 +30,6 @@ define([], function () {
       for(var key in game.playersHash){
         x = game.playersHash[key].position.x*20;
         y = game.playersHash[key].position.y*20;
-        
         ctx.fillStyle = game.playersHash[key].color;
         ctx.fillRect(x, y, 20, 20);
       }
