@@ -75,7 +75,7 @@ requirejs(['express', 'http', 'socket.io', 'app/models/game'], function (express
 
       if (Object.keys(game.playersHash).length < 2) {
         socket.emit('waitingGame', game);
-      } else if (Object.keys(game.playersHash).length === 2) {
+      } else if (Object.keys(game.playersHash).length >= 2) {
         game.startGame();
         io.sockets.emit('startGame', game);
       }
